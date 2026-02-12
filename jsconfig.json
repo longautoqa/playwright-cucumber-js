@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "checkJs": true,
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "baseUrl": "."
+    },
+    "include": [
+        "src/**/*.js",
+        "tests/**/*.js",
+        "support/**/*.js",
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
