@@ -5,8 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test:chromium": "BROWSER=chromium npx cucumber-js",
+    "test:chromium:headed": "BROWSER=chromium HEADLESS=false npx cucumber-js",
     "test:firefox": "BROWSER=firefox npx cucumber-js",
+    "test:firefox:headed": "BROWSER=firefox HEADLESS=false npx cucumber-js",
     "test:webkit": "BROWSER=webkit npx cucumber-js",
+    "test:webkit:headed": "BROWSER=webkit HEADLESS=false npx cucumber-js",
     "test:all": "npm run test:chromium && npm run test:firefox && npm run test:webkit",
     "test:parallel": "BROWSER=chromium npx cucumber-js & BROWSER=firefox npx cucumber-js & BROWSER=webkit npx cucumber-js & wait",
     "report": "open reports/cucumber-report.html"

@@ -16,10 +16,16 @@ Given('I open the Sauce Demo website', async function () {
 
 When('I enter the username and password', async function () {
   const { username, password } = credentials.validUser;
-  
+
   await this.loginPage.enterUsername(username);
   await this.loginPage.enterPassword(password);
   logger.info('Username and password entered');
+});
+
+When('I enter the username {string} and password {string}', async function (username, password) {
+  await this.loginPage.enterUsername(username);
+  await this.loginPage.enterPassword(password);
+  logger.info(`Username "${username}" and password entered`);
 });
 
 When('I click the Login button', async function () {
@@ -32,6 +38,32 @@ Then('I should see the products page', async function () {
   const isVisible = await this.productsPage.isDisplayed();
   assert.strictEqual(isVisible, true, 'Products page should be visible after login');
   logger.info('Products page verified as visible');
+});
+
+Then('the page URL should contain {string}', async function (expectedText) {
+  const url = this.page.url();
+  assert.ok(url.includes(expectedText), `Expected URL to contain "${expectedText}", but got "${url}"`);
+  logger.info(`URL contains "${expectedText}": ${url}`);
+});
+
+Then('the total number of products should be {int}', async function (expectedCount) {
+  assert.strictEqual(this.products.length, expectedCount, `Expected ${expectedCount} products, but found ${this.products.length}`);
+  logger.info(`Product count verified: ${this.products.length}`);
+});
+
+Then('the products page title should be {string}', async function (expectedTitle) {
+  this.productsPage = new ProductsPage(this.page);
+  const titleLocator = this.productsPage.pageTitle;
+  await titleLocator.waitFor();
+  const actualTitle = await titleLocator.textContent();
+  assert.strictEqual(actualTitle, expectedTitle, `Expected page title "${expectedTitle}", but got "${actualTitle}"`);
+  logger.info(`Page title verified: ${actualTitle}`);
+});
+
+Then('I should see the error message {string}', async function (expectedMessage) {
+  const actualMessage = await this.loginPage.getErrorMessage();
+  assert.strictEqual(actualMessage, expectedMessage, `Expected error "${expectedMessage}", but got "${actualMessage}"`);
+  logger.info(`Error message verified: ${actualMessage}`);
 });
 
 When('I get all products with their name and price', async function () {
