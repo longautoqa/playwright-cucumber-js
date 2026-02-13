@@ -60,6 +60,7 @@ Then('the cart quantity should be {string}', async function (expectedQty) {
 });
 
 When('I go to the cart page', async function () {
+  // @ts-ignore
   await this.productsPage.goToCart();
   this.cartPage = new CartPage(this.page);
   logger.info('Navigated to cart page');
