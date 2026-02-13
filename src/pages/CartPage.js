@@ -1,9 +1,11 @@
+/** @typedef {import('playwright').Page} Page */
+
 const logger = require('../../support/logger');
 const BasePage = require('./BasePage');
 
 class CartPage extends BasePage {
   /**
-   * @param {import('playwright').Page} page
+   * @param {Page} page
    */
   constructor(page) {
     super(page);
@@ -18,6 +20,10 @@ class CartPage extends BasePage {
     this.cartBadge = page.locator('.shopping_cart_badge');
   }
 
+  /**
+   * Gets all items currently in the cart.
+   * @returns {Promise<Array<{quantity: string, name: string, description: string, price: string}>>} Array of cart item objects
+   */
   async getItems() {
     const count = await this.cartItems.count();
     const cartItems = [];
@@ -34,6 +40,12 @@ class CartPage extends BasePage {
     return cartItems;
   }
 
+  /**
+   * Verifies the quantity of the first cart item matches the expected value.
+   * @param {number|string} expectedQty - The expected quantity
+   * @returns {Promise<boolean>} True if the quantity matches, false otherwise
+   * @throws {Error} If no items are in the cart
+   */
   async verifyQuantity(expectedQty) {
     const items = await this.getItems();
     if (items.length === 0) {
@@ -44,18 +56,36 @@ class CartPage extends BasePage {
     return actualQty === String(expectedQty);
   }
 
+  /**
+   * Checks if the remove button is enabled.
+   * @returns {Promise<boolean>} True if the remove button is enabled
+   */
   async isRemoveButtonEnabled() {
     return await this.isElementEnabled(this.removeButton.first());
   }
 
+  /**
+   * Checks if the checkout button is enabled.
+   * @returns {Promise<boolean>} True if the checkout button is enabled
+   */
   async isCheckoutButtonEnabled() {
     return await this.isElementEnabled(this.checkoutButton);
   }
 
+  /**
+   * Checks if the continue shopping button is enabled.
+   * @returns {Promise<boolean>} True if the continue shopping button is enabled
+   */
   async isContinueShoppingButtonEnabled() {
     return await this.isElementEnabled(this.continueShoppingButton);
   }
 
+  /**
+   * Removes a cart item by its index.
+   * @param {number} [index=0] - The index of the item to remove
+   * @returns {Promise<void>}
+   * @throws {Error} If no remove button exists at the given index
+   */
   async removeItem(index = 0) {
     const count = await this.removeButton.count();
     if (count > index) {
@@ -66,6 +96,10 @@ class CartPage extends BasePage {
     }
   }
 
+  /**
+   * Gets the cart badge count, returning 0 if the badge is not visible.
+   * @returns {Promise<number>} The number displayed on the cart badge
+   */
   async getCartBadgeCount() {
     try {
       const badge = await this.cartBadge.textContent({ timeout: 3000 });

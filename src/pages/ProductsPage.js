@@ -1,9 +1,11 @@
+/** @typedef {import('playwright').Page} Page */
+
 const logger = require('../../support/logger');
 const BasePage = require('./BasePage');
 
 class ProductsPage extends BasePage {
   /**
-   * @param {import('playwright').Page} page
+   * @param {Page} page
    */
   constructor(page) {
     super(page);
@@ -16,6 +18,10 @@ class ProductsPage extends BasePage {
     this.cartLink = page.locator('.shopping_cart_link');
   }
 
+  /**
+   * Checks if the Products page is displayed by verifying the page title.
+   * @returns {Promise<boolean>} True if the page title is "Products"
+   */
   async isDisplayed() {
     try {
       await this.waitForElement(this.pageTitle);
@@ -29,6 +35,10 @@ class ProductsPage extends BasePage {
     }
   }
 
+  /**
+   * Gets all products displayed on the page.
+   * @returns {Promise<Array<{name: string, price: string}>>} Array of product objects
+   */
   async getAllProducts() {
     const count = await this.inventoryItems.count();
     const products = [];
@@ -44,11 +54,20 @@ class ProductsPage extends BasePage {
     return products;
   }
 
+  /**
+   * Adds a product to the cart by its index.
+   * @param {number} [index=0] - The index of the product to add
+   * @returns {Promise<void>}
+   */
   async addProductToCart(index = 0) {
     await this.click(this.addToCartButtons.nth(index));
     logger.info(`Added product at index ${index} to cart`);
   }
 
+  /**
+   * Gets the cart badge count, returning 0 if the badge is not visible.
+   * @returns {Promise<number>} The number displayed on the cart badge
+   */
   async getCartCount() {
     try {
       const badge = await this.cartBadge.textContent({ timeout: 3000 });
@@ -61,6 +80,10 @@ class ProductsPage extends BasePage {
     }
   }
 
+  /**
+   * Navigates to the cart page.
+   * @returns {Promise<void>}
+   */
   async goToCart() {
     logger.info('Navigating to cart');
     await this.click(this.cartLink);

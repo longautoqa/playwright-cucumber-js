@@ -33,10 +33,15 @@ cp .env.example .env.staging
 # Run on all browsers (sequential)
 npm run test:all
 
-# Run on a specific browser
+# Run on a specific browser in HEADLESS mode
 npm run test:chromium
 npm run test:firefox
 npm run test:webkit
+
+# Run on a specific browser in non HEADLESS (headed) mode
+npm run test:chromium:headed
+npm run test:firefox:headed
+npm run test:webkit:headed
 
 # Run on all browsers in parallel
 npm run test:parallel
