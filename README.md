@@ -22,11 +22,6 @@ Playwright + Cucumber (BDD) + JS automation framework
 npm install
 ```
 
-Copy the environment file:
-```bash
-cp .env.example .env.staging
-```
-
 ## Running Tests
 
 ```bash
