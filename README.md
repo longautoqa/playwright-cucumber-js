@@ -20,14 +20,18 @@ Playwright + Cucumber (BDD) + JS automation framework
 
 ```bash
 npm install
+```
 
+Copy the environment file:
+```bash
+cp .env.example .env.staging
 ```
 
 ## Running Tests
 
 ```bash
 # Run on all browsers (sequential)
-npm test
+npm run test:all
 
 # Run on a specific browser
 npm run test:chromium
